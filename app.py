@@ -30,7 +30,7 @@ st.markdown("""
         height: 100%;
         object-fit: cover;
         z-index: -1;  /* Make sure the video is behind all other content */
-        opacity: 0.1;  /* Low opacity for the video background */
+        opacity: 0.3;  /* Low opacity for the video background */
     }
 
     .container {
