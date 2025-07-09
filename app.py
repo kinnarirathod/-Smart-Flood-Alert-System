@@ -1,127 +1,6 @@
-# # app.py
-# import streamlit as st
-# import pickle
-# import numpy as np
-
-# # Load model
-# model = pickle.load(open("model_nasa.pkl", "rb"))
-
-# # --- Page Config ---
-# st.set_page_config(
-#     page_title="Smart Flood Alert",
-#     page_icon="💧",
-#     layout="centered"
-# )
-
-# # --- Custom CSS Styling ---
-# def local_css():
-#     st.markdown("""
-#         <style>
-#         body {
-#             font-family: 'Segoe UI', sans-serif;
-#             background-color: #f9fbfc;
-#         }
-#         .main {
-#             background-color: #ffffff;
-#             padding: 2rem;
-#             border-radius: 12px;
-#             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-#         }
-#         h1, h2, h3, h4 {
-#             color: #1e3a5f;
-#         }
-#         .stButton>button {
-#             background-color: #0b6e99;
-#             color: #fff;
-#             padding: 0.75rem 1.5rem;
-#             border-radius: 8px;
-#             font-weight: 600;
-#             font-size: 1rem;
-#         }
-#         .stButton>button:hover {
-#             background-color: #084c6d;
-#         }
-#         .stTextInput>div>input {
-#             padding: 10px;
-#             border-radius: 6px;
-#         }
-#         .output-box {
-#             margin-top: 30px;
-#             padding: 20px;
-#             border-radius: 10px;
-#             font-size: 1.1rem;
-#             font-weight: 500;
-#             box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
-#         }
-#         .danger {
-#             background-color: #fdecea;
-#             border-left: 6px solid #d32f2f;
-#             color: #b71c1c;
-#         }
-#         .safe {
-#             background-color: #e8f5e9;
-#             border-left: 6px solid #388e3c;
-#             color: #1b5e20;
-#         }
-#         footer {
-#             visibility: hidden;
-#         }
-#         </style>
-#     """, unsafe_allow_html=True)
-
-# local_css()
-
-# # --- Sidebar ---
-# st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3222/3222800.png", width=100)
-# st.sidebar.title("ℹ️ Instructions")
-# st.sidebar.markdown("""
-# - Input recent **rainfall data**.
-# - Click **Check Flood Risk**.
-# - View the **prediction** instantly.
-# """)
-# st.sidebar.markdown("---")
-# st.sidebar.markdown("📡 Data powered by NASA.")
-
-# # --- Main UI ---
-# st.markdown('<div class="main">', unsafe_allow_html=True)
-# st.title("💧 Smart Flood Alert System")
-# st.subheader("Early Warning. Smart Decisions.")
-# st.markdown("Provide rainfall measurements to assess the risk of a flood:")
-
-# # --- Input Form ---
-# with st.form("flood_form"):
-#     col1, col2 = st.columns(2)
-#     with col1:
-#         rainfall_1d = st.number_input("🌧️ 1-Day Rainfall (mm)", min_value=0.0, step=0.1, format="%.1f")
-#     with col2:
-#         rainfall_2d = st.number_input("🌧️ 2-Day Cumulative Rainfall (mm)", min_value=0.0, step=0.1, format="%.1f")
-
-#     submitted = st.form_submit_button("🔍 Check Flood Risk")
-
-# # --- Prediction ---
-# if submitted:
-#     features = np.array([[rainfall_1d, rainfall_2d]])
-#     prediction = model.predict(features)[0]
-
-#     if prediction == 1:
-#         st.markdown('<div class="output-box danger">🚨 <strong>High Flood Risk Detected!</strong><br>Please take emergency precautions and stay tuned to alerts.</div>', unsafe_allow_html=True)
-#     else:
-#         st.markdown('<div class="output-box safe">✅ <strong>No Flood Risk Detected.</strong><br>Continue monitoring the weather and stay safe.</div>', unsafe_allow_html=True)
-
-# st.markdown("</div>", unsafe_allow_html=True)
-
-# # --- Footer ---
-# st.markdown("""
-# <hr>
-# <div style="text-align:center; font-size: 14px; color: #888;">
-#     © 2025 Smart Flood Alert | Created by Megha, Heena, Kinnari, Atika & Roshni
-# </div>
-# """, unsafe_allow_html=True)
 
 
 
-
-# app.py
 import streamlit as st
 import pickle
 import numpy as np
@@ -129,111 +8,153 @@ import numpy as np
 # Load model
 model = pickle.load(open("model_nasa.pkl", "rb"))
 
-# --- Page Config ---
-st.set_page_config(page_title="Flood Alert System", page_icon="🌧️", layout="centered")
-
-# --- Custom CSS ---
+# --- Page Configuration ---
+st.set_page_config(page_title="Flood Guardian", page_icon="🌊", layout="centered")
+# --- Custom CSS for New Look with Video Background ---
 st.markdown("""
     <style>
     html, body, [class*="css"] {
-        font-family: 'Segoe UI', sans-serif;
-        background-color: #f2f6fc;
+        font-family: 'Roboto', sans-serif;
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
     }
-    .main-container {
-        background-color: white;
-        padding: 2rem;
-        border-radius: 16px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-        max-width: 700px;
+
+    /* Video background */
+    .video-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;  /* Make sure the video is behind all other content */
+        opacity: 0.1;  /* Low opacity for the video background */
+    }
+
+    .container {
+        background-color: rgba(255, 255, 255, 0.85);  /* White container with slight transparency */
+        padding: 1.5rem;
+        border-radius: 20px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+        max-width: 450px;
         margin: auto;
+        margin-top: 3rem;
     }
-    .header {
+
+    .title {
         text-align: center;
-        padding: 1.5rem 1rem;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #4fc3f7, #1976d2);
-        color: white;
+        font-size: 2rem;
+        color: #2c3e50;  /* Darker shade of blue */
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+        text-align: center;
+        font-size: 1.1rem;
+        color: #7f8c8d;  /* Light gray text */
         margin-bottom: 1.5rem;
     }
-    .input-row {
+
+    .input-container {
+        margin-bottom: 1.2rem;
+    }
+
+    .stButton>button {
+        background-color: #3498db;  /* Sky blue button */
+        color: white;
+        font-weight: 600;
+        border: none;
+        padding: 0.7rem;
+        border-radius: 10px;
+        width: 100%;
+        font-size: 1.1rem;
         margin-top: 1rem;
     }
-    .stButton>button {
-        width: 100%;
-        background-color: #1976d2;
-        color: white;
-        padding: 0.6rem;
-        border: none;
-        border-radius: 8px;
-        font-weight: 600;
-    }
+
     .stButton>button:hover {
-        background-color: #125ea7;
+        background-color: #2980b9;  /* Darker blue on hover */
     }
-    .alert-box {
+
+    .alert-card {
         margin-top: 2rem;
         padding: 1.2rem;
-        border-radius: 10px;
-        font-size: 1.1rem;
+        border-radius: 16px;
+        font-size: 1rem;
         font-weight: 500;
         display: flex;
-        align-items: center;
-        gap: 1rem;
+        align-items: flex-start;
+        gap: 0.8rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
-    .danger {
-        background-color: #ffebee;
-        border-left: 6px solid #d32f2f;
-        color: #b71c1c;
+
+    .risk {
+        background-color: #f9ebeb;  /* Light red background */
+        border-left: 6px solid #e74c3c;  /* Red border */
+        color: #c0392b;
     }
+
     .safe {
-        background-color: #e8f5e9;
-        border-left: 6px solid #388e3c;
-        color: #1b5e20;
+        background-color: #e8f5e9;  /* Light green background */
+        border-left: 6px solid #27ae60;  /* Green border */
+        color: #2ecc71;
     }
-    .emoji {
+
+    .icon {
         font-size: 2rem;
     }
+
     footer {
         visibility: hidden;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# --- Main UI ---
-st.markdown('<div class="main-container">', unsafe_allow_html=True)
-st.markdown('<div class="header"><h2>🌧️ Smart Flood Alert System</h2><p>Predict flood risk based on rainfall data</p></div>', unsafe_allow_html=True)
+# --- Embed Video as Background ---
+st.markdown("""
+    <video class="video-background" autoplay loop muted>
+        <source src="vid.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+""", unsafe_allow_html=True)
+
+# --- Title and Subtitle Inside the Container ---
+st.markdown('<div class="title">🌊 Flood Guardian</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">Instant flood risk prediction based on recent rainfall data</div>', unsafe_allow_html=True)
 
 # --- Input Form ---
-with st.form("flood_form"):
-    col1, col2 = st.columns(2)
-    with col1:
-        rainfall_1d = st.number_input("🌧️ 1-Day Rainfall (mm)", min_value=0.0, step=0.1, format="%.1f")
-    with col2:
-        rainfall_2d = st.number_input("🌧️ 2-Day Total Rainfall (mm)", min_value=0.0, step=0.1, format="%.1f")
+with st.form("flood_input_form"):
+    rainfall_1d = st.number_input("1-Day Rainfall (mm)", min_value=0.0, step=0.1, format="%.1f", key="rain1")
+    rainfall_2d = st.number_input("2-Day Cumulative Rainfall (mm)", min_value=0.0, step=0.1, format="%.1f", key="rain2")
+    submit = st.form_submit_button("🌐 Analyze Now")
 
-    submitted = st.form_submit_button("🔍 Check Flood Risk")
-
-# --- Prediction Display ---
-if submitted:
-    features = np.array([[rainfall_1d, rainfall_2d]])
-    prediction = model.predict(features)[0]
+# --- Prediction Result ---
+if submit:
+    input_features = np.array([[rainfall_1d, rainfall_2d]])
+    prediction = model.predict(input_features)[0]
 
     if prediction == 1:
-        st.markdown(
-            '<div class="alert-box danger"><span class="emoji">🚨</span>'
-            '<div><strong>High Flood Risk Detected!</strong><br>Please take emergency precautions and stay updated.</div></div>',
-            unsafe_allow_html=True)
+        st.markdown("""
+            <div class="alert-card risk">
+                <span class="icon">⚠️</span>
+                <div><strong>Warning: Potential Flood Conditions!</strong><br>
+                Local rainfall suggests possible flooding. Stay alert, follow safety advisories, and prepare an emergency plan.</div>
+            </div>
+        """, unsafe_allow_html=True)
     else:
-        st.markdown(
-            '<div class="alert-box safe"><span class="emoji">✅</span>'
-            '<div><strong>No Flood Risk Detected.</strong><br>Conditions are normal. Stay safe and keep monitoring.</div></div>',
-            unsafe_allow_html=True)
+        st.markdown("""
+            <div class="alert-card safe">
+                <span class="icon">🌤️</span>
+                <div><strong>All Clear: No Flood Risk Detected</strong><br>
+                Current rainfall levels are safe. Continue monitoring weather updates regularly.</div>
+            </div>
+        """, unsafe_allow_html=True)
 
 # --- Footer ---
 st.markdown("""
-    <hr style="margin-top:2rem;">
-    <div style="text-align: center; font-size: 13px; color: #888;">
-        © 2025 Smart Flood Alert • Team: Megha, Heena, Kinnari, Atika & Roshni
+    <div style="text-align: center; font-size: 12px; margin-top: 3rem; color: #aaa;">
+        Developed by Megha and Team 🏄‍♀️
     </div>
-</div>
 """, unsafe_allow_html=True)
